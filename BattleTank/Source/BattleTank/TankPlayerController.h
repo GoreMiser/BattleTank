@@ -14,7 +14,8 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
-public:
+private:
+
 	ATank* getControlledTank() const;
 	
 	virtual void BeginPlay() override;
@@ -25,4 +26,16 @@ public:
 
 	bool getSightRayHitLocation(FVector&) const;
 
+	bool getLookDirection(FVector2D, FVector&) const;
+	
+	bool getLookVectorHitLocation(FVector, FVector&) const;
+
+	UPROPERTY(EDITANYWHERE)
+	float crosshairLocationX = 0.5;
+
+	UPROPERTY(EDITANYWHERE)
+	float crosshairLocationY = 0.33333;
+
+	UPROPERTY(EDITANYWHERE)
+	float lineTraceRange = 1000000.0;
 };
