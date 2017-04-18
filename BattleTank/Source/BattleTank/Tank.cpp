@@ -1,7 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
+#include "TankBarrel.h"
+#include "Projectile.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 #include "Tank.h"
 
 
@@ -17,6 +20,7 @@ ATank::ATank()
 
 void ATank::setBarrelReference(UTankBarrel *barrelToSet) {
 	tankAimingComponent->setBarrelReference(barrelToSet);
+	barrel = barrelToSet;
 }
 
 void ATank::setTurretReference(UTankTurret *turretToSet) {
@@ -24,7 +28,16 @@ void ATank::setTurretReference(UTankTurret *turretToSet) {
 }
 
 void ATank::fire() {
-	UE_LOG(LogTemp, Warning, TEXT("BANG BANG PEW PEW I'M A TANK"))
+	bool isReloaded = (FPlatformTime::Seconds() - lastFireTime) > reloadTime;
+
+	if (barrel && isReloaded) {
+		//spawn projectile at socket place
+		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBP, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
+
+		projectile->launch(launchSpeed);
+
+		lastFireTime = FPlatformTime::Seconds();
+	}
 }
 
 

@@ -8,6 +8,8 @@
 class UTankBarrel; //forward declaration
 class UTankTurret;
 class UTankAimingComponent;
+class UTankMovementComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -40,6 +42,15 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float launchSpeed = 40000;
+	float launchSpeed = 4000;
 	
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> projectileBP;
+
+	UTankBarrel *barrel = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float reloadTime = 3;
+	double lastFireTime = 0;
+
 };
